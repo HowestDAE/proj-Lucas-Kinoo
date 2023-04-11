@@ -11,7 +11,5 @@
         <viewModel:MainVM />
     </Window.DataContext>
 
-    <Grid>
-        <Frame Content="{Binding CurrentPage}" />
-    </Grid>
+    <Frame Content="{Binding CurrentPage}" />
 </Window>
