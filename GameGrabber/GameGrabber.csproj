@@ -87,6 +87,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Game.cs" />
+    <Compile Include="Repository\GameRepositoryOnline.cs" />
     <Compile Include="Repository\GameRepositoryLocal.cs" />
     <Compile Include="Repository\IGameRepository.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
