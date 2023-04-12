@@ -3,7 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:userControls="clr-namespace:GameGrabber.View"
+      xmlns:userControls="clr-namespace:GameGrabber.View.UserControls"
       xmlns:viewModel="clr-namespace:GameGrabber.ViewModel"
       mc:Ignorable="d"
       d:DesignHeight="650" d:DesignWidth="1200"
@@ -16,8 +16,8 @@
     <Grid Background="#111">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height=".5*" />
-            <RowDefinition Height="9.5*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -26,21 +26,26 @@
             <ColumnDefinition Width=".25*" />
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#24262E" />
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#1B1D25" />
+        <userControls:SearchBox Grid.Row="0" Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                Padding="5" />
 
         <ListBox x:Name="lstGames" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Games}"
                  Background="Transparent"
                  BorderThickness="0"
+                 HorizontalAlignment="Stretch"
+                 Width="Auto"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,10" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <userControls:GameCard Width="250" />
+                    <userControls:GameCard Width="350" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

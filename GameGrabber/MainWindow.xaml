@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:GameGrabber.ViewModel"
         mc:Ignorable="d"
-        Title="Game Grabber" Height="1080" Width="1920"
+        Title="Game Grabber" Height="720" Width="1280"
         WindowStyle="None"
         Background="#1B1D25"
         WindowStartupLocation="CenterScreen">
@@ -25,7 +25,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border Background="#1B1D25" MouseDown="Border_MouseDown">
+        <Border Background="#24262E" MouseDown="Border_MouseDown">
 
             <Grid Margin="5,0">
                 <Label Content="GAME GRABBER"
