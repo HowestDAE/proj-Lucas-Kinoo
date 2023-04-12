@@ -10,8 +10,9 @@ namespace GameGrabber.View.UserControls
         // Define the search event
         public static event EventHandler<string> Search;
 
-        private System.Timers.Timer _searchDelayTimer;
+        private bool _disableInstantSearch = false;
         private double _searchDelayMs = 150;
+        private System.Timers.Timer _searchDelayTimer;
 
         public SearchBox()
         {
@@ -78,6 +79,16 @@ namespace GameGrabber.View.UserControls
 
         private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_disableInstantSearch)
+            {
+                if (string.IsNullOrEmpty(txtInput.Text))
+                {
+                    Search?.Invoke(null, "");
+                }
+
+                return;
+            }
+
             if (_searchDelayTimer != null)
             {
                 // If there's an existing timer, stop it

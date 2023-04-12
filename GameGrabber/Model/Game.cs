@@ -6,10 +6,10 @@ namespace GameGrabber.Model
     internal class Game
     {
         // Set the maximum number of characters for the title
-        private readonly int maxTitleLength = 20;
+        private readonly int maxTitleLength = 35;
 
         // Set the maximum number of characters for the platforms
-        private readonly int maxPlatformsLength = 30;
+        private readonly int maxPlatformsLength = 45;
 
         [JsonProperty(PropertyName = "image")]
         public string ImageUrl { get; set; }

@@ -2,8 +2,8 @@
 using GameGrabber.Model;
 using GameGrabber.Repository;
 using GameGrabber.View.UserControls;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameGrabber.ViewModel
@@ -47,20 +47,29 @@ namespace GameGrabber.ViewModel
                 ShowAllGames();
                 return;
             }
-
-            _ = SearchGames(searchQuery);
+            _ = SearchGames(searchQuery.ToString());
         }
 
         private async Task SearchGames(string searchQuery)
         {
-            // Convert the search query to lowercase for case-insensitive comparison
-            string query = searchQuery.ToLowerInvariant();
-
             // Perform the search asynchronously on a separate thread
             List<Game> filteredGames = await Task.Run(() =>
             {
-                return _allGames.Where(game => game.Title.ToLowerInvariant().Contains(query)).ToList();
-            }).ConfigureAwait(true);
+                // Use List<T> constructor with capacity to optimize memory allocation
+                List<Game> results = new List<Game>(_allGames.Count);
+
+                // Use foreach loop for better readability and potential performance improvement
+                foreach (Game game in _allGames)
+                {
+                    // Use string.IndexOf instead of string.Contains for case-insensitive search
+                    if (game.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        results.Add(game);
+                    }
+                }
+
+                return results;
+            }).ConfigureAwait(false);
 
             // Update the Games property with the filtered games on the UI thread
             Games = filteredGames;
