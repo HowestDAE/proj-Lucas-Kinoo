@@ -10,6 +10,9 @@ namespace GameGrabber.View.UserControls
         // Define the search event
         public static event EventHandler<string> Search;
 
+        private System.Timers.Timer _searchDelayTimer;
+        private double _searchDelayMs = 150;
+
         public SearchBox()
         {
             InitializeComponent();
@@ -71,6 +74,46 @@ namespace GameGrabber.View.UserControls
             }
 
             Search?.Invoke(null, searchQuery);
+        }
+
+        private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_searchDelayTimer != null)
+            {
+                // If there's an existing timer, stop it
+                _searchDelayTimer.Stop();
+            }
+            else
+            {
+                // Otherwise, create a new timer
+                _searchDelayTimer = new System.Timers.Timer(_searchDelayMs);
+                _searchDelayTimer.Elapsed += OnSearchDelayTimerElapsed;
+                _searchDelayTimer.AutoReset = false;
+            }
+
+            // Start the timer to wait for the specified delay
+            _searchDelayTimer.Start();
+        }
+
+        private void OnSearchDelayTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            // Invoke the search with the current text after the delay
+            Dispatcher.Invoke(() =>
+            {
+                if (string.IsNullOrEmpty(txtInput.Text))
+                {
+                    Search?.Invoke(null, "");
+                }
+                else
+                {
+                    Search?.Invoke(null, txtInput.Text);
+                }
+            });
+
+            // Stop and dispose the timer
+            _searchDelayTimer.Stop();
+            _searchDelayTimer.Dispose();
+            _searchDelayTimer = null;
         }
     }
 }

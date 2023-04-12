@@ -16,6 +16,7 @@
                 HorizontalAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
+                TextChanged="txtInput_TextChanged"
                 IsKeyboardFocusedChanged="txtInput_IsKeyboardFocusedChanged"
                 LostFocus="txtInput_LostFocus"
                 Padding="10" />
@@ -38,8 +39,8 @@
                     Foreground="#707070"
                     BorderThickness="0"
                     HorizontalAlignment="Right"
-                    Margin="0,0,7,0" 
-                    Click="btnSearch_Click"/>
+                    Margin="0,0,7,0"
+                    Click="btnSearch_Click" />
         </Grid>
     </Border>
 </UserControl>
