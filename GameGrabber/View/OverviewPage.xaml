@@ -27,9 +27,19 @@
         </Grid.ColumnDefinitions>
 
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#1B1D25" />
-        <userControls:SearchBox Grid.Row="0" Grid.Column="1"
-                                HorizontalAlignment="Center"
-                                Padding="5" />
+        <StackPanel Grid.Row="0" Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
+            <userControls:SearchBox Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="5" />
+            <userControls:ToggleRepositoryButton Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 Width="45"
+                                                 Height="45"
+                                                 Padding="5" />
+        </StackPanel>
 
         <ListBox x:Name="lstGames" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Games}"
                  Background="Transparent"

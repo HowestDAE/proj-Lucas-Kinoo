@@ -15,6 +15,23 @@ namespace GameGrabber.ViewModel
         private List<Game> _games;
         private List<Game> _allGames;
 
+        public bool UseLocalRepository
+        {
+            get { return _gameRepository is GameRepositoryLocal; }
+            set
+            {
+                if (value)
+                {
+                    _gameRepository = new GameRepositoryLocal();
+                }
+                else
+                {
+                    _gameRepository = new GameRepositoryOnline();
+                }
+                _ = GetGamesAsync();
+            }
+        }
+
         public List<Game> Games
         {
             get { return _games; }
@@ -27,8 +44,7 @@ namespace GameGrabber.ViewModel
 
         public OverviewVM()
         {
-            _gameRepository = new GameRepositoryOnline();
-            _ = GetGamesAsync();
+            UseLocalRepository = false;
 
             // Subscribe to the Search event of the SearchBox UserControl
             SearchBox.Search += SearchBox_Search;
