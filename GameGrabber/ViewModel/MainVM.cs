@@ -1,26 +1,36 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using GameGrabber.View;
-using System;
 using System.Windows.Controls;
 
 namespace GameGrabber.ViewModel
 {
-    internal class MainVM
+    internal class MainVM : ObservableObject
     {
         public MainVM()
         {
             CurrentPage = OverviewPage;
-            SwitchPageCommand = new RelayCommand(SwitchPage);
+
+            OverviewPage.CardDoubleClick += (s, e) => SwitchPage();
+            DetailVM.Back += (s, e) => SwitchPage();
         }
 
         public Page CurrentPage { get; private set; }
-        public RelayCommand SwitchPageCommand { get; private set; }
 
         public OverviewPage OverviewPage { get; } = new OverviewPage();
+        public DetailPage DetailPage { get; } = new DetailPage();
 
         private void SwitchPage()
         {
-            throw new NotImplementedException();
+            if (CurrentPage is OverviewPage)
+            {
+                CurrentPage = DetailPage;
+            }
+            else
+            {
+                CurrentPage = OverviewPage;
+            }
+
+            OnPropertyChanged(nameof(CurrentPage));
         }
     }
 }

@@ -69,6 +69,6 @@
             </Grid>
         </Border>
 
-        <Frame Grid.Row="1" Content="{Binding CurrentPage}" />
+        <Frame Grid.Row="1" Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

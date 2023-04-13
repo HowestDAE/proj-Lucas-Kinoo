@@ -14,6 +14,17 @@ namespace GameGrabber.ViewModel
 
         private List<Game> _games;
         private List<Game> _allGames;
+        private Game _selectedGame;
+
+        public Game SelectedGame
+        {
+            get { return _selectedGame; }
+            set
+            {
+                _selectedGame = value;
+                OnPropertyChanged(nameof(SelectedGame));
+            }
+        }
 
         public bool UseLocalRepository
         {

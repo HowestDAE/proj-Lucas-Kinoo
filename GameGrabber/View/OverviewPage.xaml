@@ -27,6 +27,7 @@
         </Grid.ColumnDefinitions>
 
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#1B1D25" />
+
         <StackPanel Grid.Row="0" Grid.Column="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
@@ -34,6 +35,7 @@
             <userControls:SearchBox Grid.Row="0"
                                     Grid.Column="1"
                                     Padding="5" />
+
             <userControls:ToggleRepositoryButton Grid.Row="0"
                                                  Grid.Column="1"
                                                  Width="45"
@@ -46,6 +48,7 @@
                  BorderThickness="0"
                  HorizontalAlignment="Stretch"
                  Width="Auto"
+                 SelectedItem="{Binding SelectedGame}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
             <ListBox.ItemsPanel>
@@ -55,7 +58,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <userControls:GameCard Width="350" />
+                    <userControls:GameCard Width="350" MouseDoubleClick="GameCard_MouseDoubleClick" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
