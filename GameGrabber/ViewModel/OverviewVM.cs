@@ -109,11 +109,13 @@ namespace GameGrabber.ViewModel
             // We always do the opposite, because the games are initially already sorted by value descending
             if (_isValueSortedDescending)
             {
-                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderBy(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false)); // Sort by value ascending, then by name ascending
+                var sortedGames = await Task.Run(() => Games.OrderBy(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false);
+                Games = await Task.Run(() => new ObservableCollection<Game>(sortedGames)).ConfigureAwait(false);
             }
             else
             {
-                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderByDescending(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false)); // Sort by value descending, then by name ascending
+                var sortedGames = await Task.Run(() => Games.OrderByDescending(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false);
+                Games = await Task.Run(() => new ObservableCollection<Game>(sortedGames)).ConfigureAwait(false);
             }
 
             _isValueSortedDescending = !_isValueSortedDescending;
@@ -124,11 +126,13 @@ namespace GameGrabber.ViewModel
         {
             if (_isNameSortedDescending)
             {
-                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderBy(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false)); // Sort by name ascending, then by value ascending
+                var sortedGames = await Task.Run(() => Games.OrderBy(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false);
+                Games = await Task.Run(() => new ObservableCollection<Game>(sortedGames)).ConfigureAwait(false);
             }
             else
             {
-                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderByDescending(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false)); // Sort by name descending, then by value ascending
+                var sortedGames = await Task.Run(() => Games.OrderByDescending(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false);
+                Games = await Task.Run(() => new ObservableCollection<Game>(sortedGames)).ConfigureAwait(false);
             }
 
             _isNameSortedDescending = !_isNameSortedDescending;
@@ -163,7 +167,7 @@ namespace GameGrabber.ViewModel
                 return _allGames.Where(game => game.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
             }).ConfigureAwait(false);
 
-            Games = new ObservableCollection<Game>(filteredGames);
+            Games = await Task.Run(() => new ObservableCollection<Game>(filteredGames)).ConfigureAwait(false); ;
         }
 
         public void ShowAllGames()
