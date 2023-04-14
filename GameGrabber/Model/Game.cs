@@ -31,6 +31,17 @@ namespace GameGrabber.Model
         [JsonProperty(PropertyName = "worth")]
         public string OriginalPrice { get; set; }
 
+        public float PriceValue
+        {
+            get
+            {
+                // Extract the numeric value from OriginalPrice and parse it as a float
+                float price;
+                float.TryParse(OriginalPrice?.Replace("$", ""), out price);
+                return price;
+            }
+        }
+
         public string Title
         {
             get

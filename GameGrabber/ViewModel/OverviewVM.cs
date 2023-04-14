@@ -1,20 +1,56 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GameGrabber.Model;
 using GameGrabber.Repository;
 using GameGrabber.View.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameGrabber.ViewModel
 {
     internal class OverviewVM : ObservableObject
     {
-        private IGameRepository _gameRepository = null;
+        // Initial sorting order is by value descending
+        private bool _isNameSortedDescending = false; // Keep track of the sorting order
 
-        private List<Game> _games;
-        private List<Game> _allGames;
+        private bool _isValueSortedDescending = true; // Keep track of the sorting order
+
+        private readonly string _sortSymbolAscending = "▲";
+        private readonly string _sortSymbolDescending = "▼";
+
         private Game _selectedGame;
+        private IGameRepository _gameRepository = null;
+        private List<Game> _allGames;
+        private ObservableCollection<Game> _games;
+
+        public RelayCommand SortValueCommand { get; private set; }
+        public RelayCommand SortNameCommand { get; private set; }
+
+        private string _sortByValueText = "Value";
+        private string _sortByNameText = "Name";
+
+        public string SortByValueText
+        {
+            get { return _sortByValueText; }
+            private set
+            {
+                _sortByValueText = value;
+                OnPropertyChanged(nameof(SortByValueText));
+            }
+        }
+
+        public string SortByNameText
+        {
+            get { return _sortByNameText; }
+            private set
+            {
+                _sortByNameText = value;
+                OnPropertyChanged(nameof(SortByNameText));
+            }
+        }
 
         public Game SelectedGame
         {
@@ -43,7 +79,7 @@ namespace GameGrabber.ViewModel
             }
         }
 
-        public List<Game> Games
+        public ObservableCollection<Game> Games
         {
             get { return _games; }
             set
@@ -59,12 +95,57 @@ namespace GameGrabber.ViewModel
 
             // Subscribe to the Search event of the SearchBox UserControl
             SearchBox.Search += SearchBox_Search;
+
+            SortValueCommand = new RelayCommand(() => SortGamesByValue());
+            SortNameCommand = new RelayCommand(() => SortGamesByName());
+
+            // Replace the last character of the button content of the correct symbol
+            SortByValueText += $" {(_isValueSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
+            SortByNameText += $" {(_isNameSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
+        }
+
+        private void SortGamesByValue()
+        {
+            // We always do the opposite, because the games are initially already sorted by value descending
+            if (_isValueSortedDescending)
+            {
+                _allGames = new List<Game>(_allGames.OrderBy(game => game.PriceValue).ThenBy(game => game.Title)); // Sort by value ascending, then by name ascending
+            }
+            else
+            {
+                _allGames = new List<Game>(_allGames.OrderByDescending(game => game.PriceValue).ThenBy(game => game.Title)); // Sort by value descending, then by name ascending
+            }
+
+            _isValueSortedDescending = !_isValueSortedDescending;
+            SortByValueText = SortByValueText.Substring(0, SortByValueText.Length - 1) + $"{(_isValueSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
+            UpdateGamesCollection();
+        }
+
+        private void SortGamesByName()
+        {
+            if (_isNameSortedDescending)
+            {
+                _allGames = new List<Game>(_allGames.OrderBy(game => game.Title, StringComparer.OrdinalIgnoreCase).ThenBy(game => game.PriceValue)); // Sort by name ascending, then by value ascending
+            }
+            else
+            {
+                _allGames = new List<Game>(_allGames.OrderByDescending(game => game.Title, StringComparer.OrdinalIgnoreCase).ThenBy(game => game.PriceValue)); // Sort by name descending, then by value ascending
+            }
+
+            _isNameSortedDescending = !_isNameSortedDescending;
+            SortByNameText = SortByNameText.Substring(0, SortByNameText.Length - 1) + $"{(_isNameSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
+            UpdateGamesCollection();
         }
 
         public async Task GetGamesAsync()
         {
             _allGames = await _gameRepository.GetGamesAsync();
-            Games = _allGames;
+            UpdateGamesCollection();
+        }
+
+        private void UpdateGamesCollection()
+        {
+            Games = new ObservableCollection<Game>(_allGames);
         }
 
         private void SearchBox_Search(object sender, string searchQuery)
@@ -79,32 +160,17 @@ namespace GameGrabber.ViewModel
 
         private async Task SearchGames(string searchQuery)
         {
-            // Perform the search asynchronously on a separate thread
             List<Game> filteredGames = await Task.Run(() =>
             {
-                // Use List<T> constructor with capacity to optimize memory allocation
-                List<Game> results = new List<Game>(_allGames.Count);
-
-                // Use foreach loop for better readability and potential performance improvement
-                foreach (Game game in _allGames)
-                {
-                    // Use string.IndexOf instead of string.Contains for case-insensitive search
-                    if (game.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        results.Add(game);
-                    }
-                }
-
-                return results;
+                return _allGames.Where(game => game.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
             }).ConfigureAwait(false);
 
-            // Update the Games property with the filtered games on the UI thread
-            Games = filteredGames;
+            Games = new ObservableCollection<Game>(filteredGames);
         }
 
         public void ShowAllGames()
         {
-            Games = _allGames;
+            Games = new ObservableCollection<Game>(_allGames);
         }
     }
 }

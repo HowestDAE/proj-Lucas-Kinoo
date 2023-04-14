@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:GameGrabber.ViewModel"
         mc:Ignorable="d"
-        Title="Game Grabber" Height="720" Width="1280"
+        Title="Game Grabber"
+        Height="720" Width="1280"
+        MinHeight="510" MinWidth="600"
         WindowStyle="None"
         Background="#1B1D25"
         WindowStartupLocation="CenterScreen">

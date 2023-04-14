@@ -21,27 +21,50 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".25*" />
-            <ColumnDefinition Width="9.5*" />
-            <ColumnDefinition Width=".25*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#1B1D25" />
+        <Rectangle Grid.Row="0" Grid.Column="0" Fill="#1B1D25" />
 
-        <StackPanel Grid.Row="0" Grid.Column="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+        <Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <userControls:SearchBox Grid.Row="0"
-                                    Grid.Column="1"
-                                    Padding="5" />
+            <StackPanel Grid.Column="0" HorizontalAlignment="Center"
+                    Orientation="Horizontal" Width="Auto">
 
-            <userControls:ToggleRepositoryButton Grid.Row="0"
-                                                 Grid.Column="1"
-                                                 Width="45"
-                                                 Height="45"
-                                                 Padding="5" />
-        </StackPanel>
+                <Button x:Name="btnSortName"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Foreground="#707070"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    Content="{Binding SortByNameText}"
+                    Padding="15"
+                    Command="{Binding SortNameCommand}" />
+
+                <Button x:Name="btnSortValue"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Foreground="#707070"
+                    FontSize="12"
+                    FontWeight="Medium"
+                    Content="{Binding SortByValueText}"
+                    Padding="15"
+                    Command="{Binding SortValueCommand}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                    Orientation="Horizontal" Width="Auto">
+
+                <userControls:SearchBox Padding="5" />
+                <userControls:ToggleRepositoryButton Width="45" Height="45" Padding="5"
+                                                 HorizontalAlignment="Right" />
+            </StackPanel>
+        </Grid>
 
         <ListBox x:Name="lstGames" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Games}"
                  Background="Transparent"
