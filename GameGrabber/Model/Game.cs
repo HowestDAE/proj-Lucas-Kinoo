@@ -53,6 +53,9 @@ namespace GameGrabber.Model
             }
         }
 
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
         public float PriceValue
         {
             get
