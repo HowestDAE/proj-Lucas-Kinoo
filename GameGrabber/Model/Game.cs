@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GameGrabber.Model
 {
@@ -17,6 +18,9 @@ namespace GameGrabber.Model
         [JsonProperty(PropertyName = "platforms")]
         public string PlatformsRaw { get; set; }
 
+        [JsonProperty(PropertyName = "open_giveaway")]
+        public string GiveawayUrl { get; set; }
+
         public string Platforms
         {
             get
@@ -30,6 +34,24 @@ namespace GameGrabber.Model
 
         [JsonProperty(PropertyName = "worth")]
         public string OriginalPrice { get; set; }
+
+        private string _instructions;
+
+        [JsonProperty(PropertyName = "instructions")]
+        public string Instructions
+        {
+            get
+            {
+                return _instructions;
+            }
+            set
+            {
+                // Convert HTML to plain text before setting the value
+                _instructions = ConvertHtmlToPlainText(value);
+                // Add an additional newline character after every '\n'
+                _instructions = _instructions.Replace("\n", "\n\n");
+            }
+        }
 
         public float PriceValue
         {
@@ -78,6 +100,22 @@ namespace GameGrabber.Model
             }
 
             return text;
+        }
+
+        private static string ConvertHtmlToPlainText(string html)
+        {
+            // Remove HTML tags using regular expressions
+            string plainText = Regex.Replace(html, "<.*?>", string.Empty);
+
+            // Replace special characters
+            plainText = Regex.Replace(plainText, "&nbsp;", " ");
+            plainText = Regex.Replace(plainText, "&lt;", "<");
+            plainText = Regex.Replace(plainText, "&gt;", ">");
+            plainText = Regex.Replace(plainText, "&amp;", "&");
+            plainText = Regex.Replace(plainText, "&quot;", "\"");
+            plainText = Regex.Replace(plainText, "&apos;", "'");
+
+            return plainText;
         }
     }
 }

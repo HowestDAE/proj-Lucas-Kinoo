@@ -11,6 +11,8 @@ namespace GameGrabber.ViewModel
 
         public static event EventHandler Back;
 
+        public RelayCommand GiveawayCommand { get; private set; }
+
         private Game _game;
 
         public Game Game
@@ -26,6 +28,17 @@ namespace GameGrabber.ViewModel
         public DetailVM()
         {
             BackCommand = new RelayCommand(() => Back?.Invoke(null, EventArgs.Empty));
+
+            GiveawayCommand = new RelayCommand(GoToGiveaway);
+        }
+
+        private void GoToGiveaway()
+        {
+            // Open the url in the default browser if it is not already open
+            if (!string.IsNullOrEmpty(Game.GiveawayUrl))
+            {
+                System.Diagnostics.Process.Start(Game.GiveawayUrl);
+            }
         }
     }
 }
