@@ -24,6 +24,7 @@ namespace GameGrabber.ViewModel
             if (CurrentPage is OverviewPage)
             {
                 CurrentPage = DetailPage;
+                (DetailPage.DataContext as DetailVM).Game = (OverviewPage.DataContext as OverviewVM).SelectedGame;
             }
             else
             {

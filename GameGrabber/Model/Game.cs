@@ -26,7 +26,7 @@ namespace GameGrabber.Model
         }
 
         [JsonProperty(PropertyName = "title")]
-        private string TitleRaw { get; set; }
+        public string TitleRaw { get; set; }
 
         [JsonProperty(PropertyName = "worth")]
         public string OriginalPrice { get; set; }

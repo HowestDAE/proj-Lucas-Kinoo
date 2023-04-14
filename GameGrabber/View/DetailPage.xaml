@@ -18,31 +18,55 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".25*" />
-            <ColumnDefinition Width="9.5*" />
-            <ColumnDefinition Width=".25*" />
-        </Grid.ColumnDefinitions>
-
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Fill="#1B1D25" />
-        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
 
-            <Border Background="#24262E"
-                HorizontalAlignment="Center"
+        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="55" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+                <Border Background="#24262E"
+                HorizontalAlignment="Left"
                 Width="40"
                 Height="40"
                 CornerRadius="3"
                 Padding="5"
-                Margin="10,0">
+                Margin="2.5,0">
 
-                <Button x:Name="btnToggleRepo"
-                        Content="◀"
+                    <Button Content="◀"
                         FontSize="12"
                         Background="Transparent"
                         Foreground="#707070"
                         BorderThickness="0"
                         Command="{Binding BackCommand}" />
-            </Border>
-        </StackPanel>
+                </Border>
+
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Text="{Binding Game.TitleRaw}"
+                       Foreground="#707070"
+                       FontWeight="Medium"
+                       FontSize="20" />
+
+            <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".5*" />
+                <RowDefinition Height=".5*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".15*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width=".15*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Source="{Binding Game.ImageUrl}" Grid.Row="0" Grid.Column="1"
+                       Margin="25" />
+        </Grid>
     </Grid>
 </Page>

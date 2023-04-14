@@ -25,14 +25,13 @@ namespace GameGrabber.View.UserControls
         {
             if (txtInput.IsKeyboardFocused)
             {
-                // Show the clear button
                 tbPlaceholder.Visibility = Visibility.Hidden;
+                txtInput.SelectAll();
             }
             else
             {
                 if (!string.IsNullOrEmpty(txtInput.Text)) return;
 
-                // Hide the clear button
                 tbPlaceholder.Visibility = Visibility.Visible;
             }
         }
@@ -41,12 +40,10 @@ namespace GameGrabber.View.UserControls
         {
             if (string.IsNullOrEmpty(txtInput.Text))
             {
-                // Show the clear button
                 tbPlaceholder.Visibility = Visibility.Visible;
             }
             else
             {
-                // Hide the clear button
                 tbPlaceholder.Visibility = Visibility.Hidden;
             }
         }
