@@ -69,7 +69,28 @@
             <Image Source="{Binding Game.ImageUrl}" Grid.Row="0" Grid.Column="1"
                        Margin="25" />
 
-            <StackPanel Grid.Column="2" Margin="25" VerticalAlignment="Center">
+            <StackPanel Grid.Column="0" Margin="25">
+
+                <TextBlock Grid.Column="2"
+                       Text="Platform"
+                       Foreground="#ECECEC"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+
+                           Padding="10" />
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding Game.PlatformsRaw}"
+                           TextWrapping="WrapWithOverflow"
+                           Foreground="#707070"
+                           FontSize="16"
+                           FontWeight="Medium"
+                           TextAlignment="Center"
+                           Margin="5,0,5,5" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="25">
 
                 <TextBlock Grid.Column="2"
                        Text="Instructions"
