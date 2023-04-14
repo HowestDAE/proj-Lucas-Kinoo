@@ -61,24 +61,23 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".65*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".65*" />
             </Grid.ColumnDefinitions>
 
             <Image Source="{Binding Game.ImageUrl}" Grid.Row="0" Grid.Column="1"
                        Margin="25" />
 
-            <StackPanel Grid.Column="0" Margin="25">
+            <StackPanel Grid.Column="0" Grid.RowSpan="3"  Margin="25">
 
                 <TextBlock Grid.Column="2"
-                       Text="Platform"
-                       Foreground="#ECECEC"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-
-                           Padding="10" />
+                           Text="Platform"
+                           Foreground="#ECECEC"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Padding="0,10" />
 
                 <TextBlock Grid.Column="2"
                            Text="{Binding Game.PlatformsRaw}"
@@ -89,19 +88,20 @@
                            TextAlignment="Center"
                            Margin="5,0,5,5" />
             </StackPanel>
+            <ScrollViewer Grid.Column="2" Grid.RowSpan="3" VerticalScrollBarVisibility="Auto">
 
-            <StackPanel Grid.Column="2" Margin="25">
+                <StackPanel Grid.Column="2" Grid.RowSpan="3" Margin="25">
 
-                <TextBlock Grid.Column="2"
+                    <TextBlock Grid.Column="2"
                        Text="Instructions"
                        Foreground="#ECECEC"
                        FontSize="20"
                        FontWeight="Bold"
                        HorizontalAlignment="Center"
 
-                           Padding="10" />
+                           Padding="0,10" />
 
-                <TextBlock Grid.Column="2"
+                    <TextBlock Grid.Column="2"
                            Text="{Binding Game.Instructions}"
                            TextWrapping="WrapWithOverflow"
                            Foreground="#707070"
@@ -109,16 +109,10 @@
                            FontWeight="Medium"
                            TextAlignment="Center"
                            Margin="5,0,5,5" />
-            </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
 
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Column="1"
+            <Border  Grid.Row="1" Grid.Column="1"
                         Background="#24262E"
                         HorizontalAlignment="Center"
                         Width="Auto"
@@ -127,33 +121,34 @@
                         Padding="5"
                         Margin="2.5,0">
 
-                    <Button Content="BROWSE TO GIVEAWAY"
+                <Button Content="BROWSE TO GIVEAWAY"
                             FontSize="12"
                             Background="Transparent"
                             Foreground="#707070"
                             BorderThickness="0"
                             FontWeight="Bold"
                             Command="{Binding GiveawayCommand}" />
-                </Border>
-            </Grid>
+            </Border>
 
-            <StackPanel Grid.Row="2" Grid.Column="1" Margin="25">
+            <ScrollViewer Grid.Row="2" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Grid.Row="2" Grid.Column="1" Margin="25">
 
-                <TextBlock Text="Game Description"
+                    <TextBlock Text="Game Description"
                            Foreground="#ECECEC"
                            FontSize="20"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
                            Padding="10" />
 
-                <TextBlock Text="{Binding Game.Description}"
+                    <TextBlock Text="{Binding Game.Description}"
                            TextWrapping="WrapWithOverflow"
                            Foreground="#707070"
                            FontSize="16"
                            FontWeight="Medium"
                            TextAlignment="Center"
                            Margin="5,0,5,5" />
-            </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>
