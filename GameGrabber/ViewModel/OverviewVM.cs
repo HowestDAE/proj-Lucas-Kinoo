@@ -96,39 +96,39 @@ namespace GameGrabber.ViewModel
             // Subscribe to the Search event of the SearchBox UserControl
             SearchBox.Search += SearchBox_Search;
 
-            SortValueCommand = new RelayCommand(() => SortGamesByValue());
-            SortNameCommand = new RelayCommand(() => SortGamesByName());
+            SortValueCommand = new RelayCommand(async () => await SortGamesByValueAsync());
+            SortNameCommand = new RelayCommand(async () => await SortGamesByNameAsync());
 
             // Replace the last character of the button content of the correct symbol
             SortByValueText += $" {(_isValueSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
             SortByNameText += $" {(_isNameSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
         }
 
-        private void SortGamesByValue()
+        private async Task SortGamesByValueAsync()
         {
             // We always do the opposite, because the games are initially already sorted by value descending
             if (_isValueSortedDescending)
             {
-                Games = new ObservableCollection<Game>(Games.OrderBy(game => game.PriceValue).ThenBy(game => game.Title)); // Sort by value ascending, then by name ascending
+                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderBy(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false)); // Sort by value ascending, then by name ascending
             }
             else
             {
-                Games = new ObservableCollection<Game>(Games.OrderByDescending(game => game.PriceValue).ThenBy(game => game.Title)); // Sort by value descending, then by name ascending
+                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderByDescending(game => game.PriceValue).ThenBy(game => game.Title)).ConfigureAwait(false)); // Sort by value descending, then by name ascending
             }
 
             _isValueSortedDescending = !_isValueSortedDescending;
             SortByValueText = SortByValueText.Substring(0, SortByValueText.Length - 1) + $"{(_isValueSortedDescending ? _sortSymbolDescending : _sortSymbolAscending)}";
         }
 
-        private void SortGamesByName()
+        private async Task SortGamesByNameAsync()
         {
             if (_isNameSortedDescending)
             {
-                Games = new ObservableCollection<Game>(Games.OrderBy(game => game.Title, StringComparer.OrdinalIgnoreCase).ThenBy(game => game.PriceValue)); // Sort by name ascending, then by value ascending
+                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderBy(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false)); // Sort by name ascending, then by value ascending
             }
             else
             {
-                Games = new ObservableCollection<Game>(Games.OrderByDescending(game => game.Title, StringComparer.OrdinalIgnoreCase).ThenBy(game => game.PriceValue)); // Sort by name descending, then by value ascending
+                Games = new ObservableCollection<Game>(await Task.Run(() => Games.OrderByDescending(game => game.Title).ThenBy(game => game.PriceValue)).ConfigureAwait(false)); // Sort by name descending, then by value ascending
             }
 
             _isNameSortedDescending = !_isNameSortedDescending;
