@@ -16,7 +16,7 @@ namespace GameGrabber.Repository
         // Static event to signal when online repository fails to load games
         public static event EventHandler OnlineRepositoryFailed;
 
-        private async Task<bool> LoadGames()
+        private async Task LoadGames()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -27,7 +27,6 @@ namespace GameGrabber.Repository
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         _games = JsonConvert.DeserializeObject<List<Game>>(content);
-                        return true;
                     }
                 }
                 catch (HttpRequestException ex)
@@ -40,7 +39,6 @@ namespace GameGrabber.Repository
                     // Handle other exceptions
                     ShowErrorMessage($"Failed to load games online, switching to local repo. Error: {ex.Message}");
                 }
-                return false;
             }
         }
 
