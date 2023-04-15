@@ -1,8 +1,10 @@
 ﻿using GameGrabber.Model;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GameGrabber.Repository
 {
@@ -11,13 +13,34 @@ namespace GameGrabber.Repository
         private const string RequestUri = "https://www.gamerpower.com/api/giveaways?sort-by=value";
         private List<Game> _games = null;
 
-        private async Task LoadGames()
+        // Static event to signal when online repository fails to load games
+        public static event EventHandler OnlineRepositoryFailed;
+
+        private async Task<bool> LoadGames()
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync(RequestUri);
-                var content = await response.Content.ReadAsStringAsync();
-                _games = JsonConvert.DeserializeObject<List<Game>>(content);
+                try
+                {
+                    var response = await client.GetAsync(RequestUri);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        _games = JsonConvert.DeserializeObject<List<Game>>(content);
+                        return true;
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    // Handle HttpRequestException (e.g., no internet connection)
+                    ShowErrorMessage($"Failed to load games online, switching to local repo. Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    // Handle other exceptions
+                    ShowErrorMessage($"Failed to load games online, switching to local repo. Error: {ex.Message}");
+                }
+                return false;
             }
         }
 
@@ -29,6 +52,12 @@ namespace GameGrabber.Repository
             }
 
             return _games;
+        }
+
+        private void ShowErrorMessage(string errorMessage)
+        {
+            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            OnlineRepositoryFailed?.Invoke(null, EventArgs.Empty); // Invoke event with error message
         }
     }
 }

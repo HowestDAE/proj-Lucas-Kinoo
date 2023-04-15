@@ -10,7 +10,6 @@ namespace GameGrabber.Repository
     {
         private List<Game> _games = null;
 
-        // TODO: Handle exceptions
         private async Task LoadGames()
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
